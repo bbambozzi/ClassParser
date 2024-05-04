@@ -1,4 +1,4 @@
-package estamosremoto.utils;
+package estamosremoto.utils.logger;
 
 public class ColorLogger {
 
