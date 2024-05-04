@@ -15,6 +15,6 @@ public record CONSTANT_Utf8(ConstantPoolTag tag, int length, byte[] bytes) imple
 
     @Override
     public String toString() {
-        return "[CONSTANT_Utf8] " + tag.toString() + " " + "bytes=" + new String(bytes, StandardCharsets.UTF_8)+ "]";
+        return "CONSTANT_Utf8[tag=" + tag.toString() + ", " + "bytes=" + new String(bytes, StandardCharsets.UTF_8)+ "]";
     }
 }
