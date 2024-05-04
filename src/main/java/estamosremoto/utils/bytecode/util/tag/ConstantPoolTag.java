@@ -21,7 +21,10 @@ public enum ConstantPoolTag {
     CONSTANT_Utf8((byte) 1),
     CONSTANT_MethodHandle((byte) 15),
     CONSTANT_MethodType((byte) 16),
-    CONSTANT_InvokeDynamic((byte) 18);
+    CONSTANT_Dynamic((byte) 17),
+    CONSTANT_InvokeDynamic((byte) 18),
+    CONSTANT_Module((byte) 19),
+    CONSTANT_Package((byte) 20);
 
     private final static Map<Byte, ConstantPoolTag> tags;
 
