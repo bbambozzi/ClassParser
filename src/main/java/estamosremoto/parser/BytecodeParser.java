@@ -1,10 +1,10 @@
 package estamosremoto.parser;
 
 import estamosremoto.utils.bytecode.BytecodeModel;
+import estamosremoto.utils.bytecode.util.ConstantPoolTag;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
@@ -72,18 +72,20 @@ public class BytecodeParser {
     private BytecodeModel getBytecodeModel() {
         try {
             byteChannel.position(0);
-            ByteBuffer magic = ByteBuffer.allocate(4);
-            ByteBuffer minor = ByteBuffer.allocate(2);
-            ByteBuffer major = ByteBuffer.allocate(2);
-            ByteBuffer constantPoolCnt = ByteBuffer.allocate(2);
-            byteChannel.read(magic);
-            byteChannel.read(minor);
-            byteChannel.read(major);
-            byteChannel.read(constantPoolCnt);
-            String magicString = toHex(magic.array());
-            short minorVersion = minor.getShort(0);
-            short majorVersion = major.getShort(0);
-            short constantPoolCount = constantPoolCnt.getShort(0);
+            String magicString = toHex(parseU4());
+
+            short minorVersion = parseU2();
+            short majorVersion = parseU2();
+            short constantPoolCount = parseU2();
+
+            logger.green("About to parse the first constant pool tag");
+
+            ByteBuffer cpInfoTag = ByteBuffer.allocate(1);
+            byteChannel.read(cpInfoTag);
+            ConstantPoolTag cpooltag = ConstantPoolTag.parse(cpInfoTag);
+            logger.green(cpooltag.name());
+
+
             return new BytecodeModel(magicString, minorVersion, majorVersion, constantPoolCount);
         } catch (Exception err) {
             logger.red("Failed to parse bytecode model!");
@@ -91,6 +93,44 @@ public class BytecodeParser {
             System.exit(1);
             return null;
         }
+    }
+
+
+    private byte parseU1() {
+        ByteBuffer buffer = ByteBuffer.allocate(2);
+        try {
+            byteChannel.read(buffer);
+            return buffer.get(0);
+        } catch (IOException e) {
+            logger.red("Failed to parse U1 at position " + buffer.position());
+        }
+        System.exit(1);
+        return buffer.get(0);
+    }
+
+    private short parseU2() {
+        ByteBuffer buffer = ByteBuffer.allocate(2);
+        try {
+            byteChannel.read(buffer);
+            return buffer.getShort(0);
+        } catch (IOException e) {
+            logger.red("Failed to parse U2 at position " + buffer.position());
+        }
+        System.exit(1);
+        return buffer.getShort(0);
+    }
+
+
+    private byte[] parseU4() {
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        try {
+            byteChannel.read(buffer);
+            return buffer.array();
+        } catch (IOException e) {
+            logger.red("Failed to parse U1 at position " + buffer.position());
+        }
+        System.exit(1);
+        return buffer.array();
     }
 
 }
