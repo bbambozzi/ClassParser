@@ -78,12 +78,13 @@ public class BytecodeParser {
             int minorVersion = parseU2();
             int majorVersion = parseU2();
             int constantPoolCount = parseU2();
-
+            var ans = new BytecodeModel(magicString, minorVersion, majorVersion, constantPoolCount);
+            logger.green("bytecode model metadata = " + ans);
             logger.green("About to parse the first constant pool tag");
             ConstantPoolItemsParser.parseItems(byteChannel, constantPoolCount);
 
 
-            return new BytecodeModel(magicString, minorVersion, majorVersion, constantPoolCount);
+            return ans;
         } catch (Exception err) {
             logger.red("Failed to parse bytecode model!");
             logger.red(err.getMessage());
