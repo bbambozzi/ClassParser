@@ -1,6 +1,8 @@
-package estamosremoto.utils.bytecode.util;
+package estamosremoto.utils.bytecode.util.tag;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ByteChannel;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,5 +45,15 @@ public enum ConstantPoolTag {
             throw new IllegalArgumentException("ByteBuffer does not evaluate to a valid CpInfo tag");
         }
         return ans;
+    }
+
+    public static ConstantPoolTag parse(ByteChannel channel) {
+        ByteBuffer buffer = ByteBuffer.allocate(1);
+        try {
+            channel.read(buffer);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to parse the constant pool tag from the byte channel!");
+        }
+        return parse(buffer);
     }
 }

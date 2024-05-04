@@ -1,7 +1,8 @@
 package estamosremoto.parser;
 
 import estamosremoto.utils.bytecode.BytecodeModel;
-import estamosremoto.utils.bytecode.util.ConstantPoolTag;
+import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
+import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -74,16 +75,12 @@ public class BytecodeParser {
             byteChannel.position(0);
             String magicString = toHex(parseU4());
 
-            short minorVersion = parseU2();
-            short majorVersion = parseU2();
-            short constantPoolCount = parseU2();
+            int minorVersion = parseU2();
+            int majorVersion = parseU2();
+            int constantPoolCount = parseU2();
 
             logger.green("About to parse the first constant pool tag");
-
-            ByteBuffer cpInfoTag = ByteBuffer.allocate(1);
-            byteChannel.read(cpInfoTag);
-            ConstantPoolTag cpooltag = ConstantPoolTag.parse(cpInfoTag);
-            logger.green(cpooltag.name());
+            ConstantPoolItemsParser.parseItems(byteChannel, constantPoolCount);
 
 
             return new BytecodeModel(magicString, minorVersion, majorVersion, constantPoolCount);
@@ -108,7 +105,7 @@ public class BytecodeParser {
         return buffer.get(0);
     }
 
-    private short parseU2() {
+    private int parseU2() {
         ByteBuffer buffer = ByteBuffer.allocate(2);
         try {
             byteChannel.read(buffer);
