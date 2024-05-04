@@ -28,7 +28,10 @@ public record ConstantPoolItemsParser() {
                 case CONSTANT_NameAndType -> new CONSTANT_NameAndType(channel);
                 case CONSTANT_Utf8 -> new CONSTANT_Utf8(channel);
                 case CONSTANT_MethodHandle -> new CONSTANT_MethodHandle(channel);
-                case CONSTANT_InvokeDynamic -> new CONSTANT_InvokeDynamic(channel);
+                case CONSTANT_Dynamic -> null; // todo
+                case CONSTANT_InvokeDynamic -> new CONSTANT_Dynamic(channel);
+                case CONSTANT_Package -> new CONSTANT_Package(channel);
+                case CONSTANT_Module -> new CONSTANT_Module(channel);
                 default -> {
                     throw new IllegalArgumentException(tag + " is not yet implemented");
                 }
