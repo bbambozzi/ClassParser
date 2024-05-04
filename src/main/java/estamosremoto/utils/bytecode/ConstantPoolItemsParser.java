@@ -33,9 +33,6 @@ public record ConstantPoolItemsParser() {
                 case CONSTANT_InvokeDynamic -> new CONSTANT_InvokeDynamic(channel);
                 case CONSTANT_Package -> new CONSTANT_Package(channel);
                 case CONSTANT_Module -> new CONSTANT_Module(channel);
-                default -> {
-                    throw new IllegalArgumentException(tag + " is not yet implemented");
-                }
             };
             logger.green("Added Constant pool item = " + constantPoolItemToAdd);
             constantPoolItems.add(constantPoolItemToAdd);

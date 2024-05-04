@@ -4,6 +4,7 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 
 import java.nio.channels.ByteChannel;
+import java.nio.charset.StandardCharsets;
 
 public record CONSTANT_String(ConstantPoolTag tag, int string_index) implements ConstantPoolItem {
 
