@@ -3,7 +3,7 @@ package estamosremoto.parser;
 import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
-import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
+import estamosremoto.utils.bytecode.util.accessflag.ClassAccessFlag;
 import estamosremoto.utils.bytecode.util.properties.HasBytes;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
@@ -20,7 +20,7 @@ public class BytecodeParser {
     private final SeekableByteChannel byteChannel;
     private final VersionMetadata versionMetadata;
     private final List<ConstantPoolItem> constantPoolItems;
-    private final List<AccessFlag> accessFlags;
+    private final List<ClassAccessFlag> accessFlags;
     private final ConstantPoolItem thisClass;
     private final ConstantPoolItem superclass;
     private final int interfaceCount;
@@ -31,7 +31,7 @@ public class BytecodeParser {
         this.byteChannel = getByteChannel(pathToBytecode);
         this.versionMetadata = getVersionMetadata();
         this.constantPoolItems = getConstantPoolItems();
-        this.accessFlags = AccessFlag.getMatching(getAccessFlagsMask());
+        this.accessFlags = ClassAccessFlag.getMatching(getAccessFlagsMask());
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
         this.interfaceCount = parseInterfaceCount();
