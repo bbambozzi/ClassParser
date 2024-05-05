@@ -202,5 +202,10 @@ public class BytecodeParser {
         return answer;
     }
 
-
+    private void printAllMethods() {
+        for (Method method : methods) {
+            var dec_index = method.descriptor_index();
+            // todo print them properly from the pool
+        }
+    }
 }
