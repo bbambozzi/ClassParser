@@ -4,6 +4,7 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.ClassAccessFlag;
+import estamosremoto.utils.bytecode.util.method.Method;
 import estamosremoto.utils.bytecode.util.properties.HasBytes;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BytecodeParser {
@@ -26,11 +28,12 @@ public class BytecodeParser {
     private final int interfaceCount;
     private final int fieldsCount;
     private final int methodsCount;
+    private final List<Method> methods;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
         this.versionMetadata = getVersionMetadata();
-        this.constantPoolItems = getConstantPoolItems();
+        this.constantPoolItems = parseConstantPoolItems();
         this.accessFlags = ClassAccessFlag.getMatching(getAccessFlagsMask());
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
@@ -39,7 +42,7 @@ public class BytecodeParser {
         this.fieldsCount = parseFieldsCount();
         // todo this.fields
         this.methodsCount = parseMethodsCount();
-        // todo this.methods
+        this.methods = parseMethodItems();
         if (interfaceCount > 0 || fieldsCount > 0) {
             throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
         }
@@ -51,6 +54,7 @@ public class BytecodeParser {
         logger.green("interface count = " + interfaceCount);
         logger.green("fields count = " + fieldsCount);
         logger.green("methods count = " + methodsCount);
+        logger.green("method items = " + methods);
         logger.green("name index of file = " + nameIndexOfFile());
         logger.green("name of file " + getNameOfFile());
     }
@@ -135,7 +139,7 @@ public class BytecodeParser {
         }
     }
 
-    private List<ConstantPoolItem> getConstantPoolItems() {
+    private List<ConstantPoolItem> parseConstantPoolItems() {
         try {
             byteChannel.position(10);
             logger.green("About to parse the first constant pool tag");
@@ -148,6 +152,15 @@ public class BytecodeParser {
             System.exit(1);
             return null;
         }
+    }
+
+    private List<Method> parseMethodItems() {
+        logger.green("about to parse the method items!");
+        List<Method> answer = new ArrayList<>();
+        for (int i = 0 ; i < methodsCount ; i++) {
+            answer.add(new Method(byteChannel));
+        }
+        return answer;
     }
 
 
