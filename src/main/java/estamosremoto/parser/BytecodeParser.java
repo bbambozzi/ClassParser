@@ -4,9 +4,9 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
-import estamosremoto.utils.bytecode.util.attributes.Bytes;
+import estamosremoto.utils.bytecode.util.attributes.HasBytes;
 import estamosremoto.utils.bytecode.util.attributes.ConstantPoolItem;
-import estamosremoto.utils.bytecode.util.attributes.NameIndex;
+import estamosremoto.utils.bytecode.util.attributes.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class BytecodeParser {
 
 
     private int nameIndexOfFile() {
-        if (thisClass instanceof NameIndex nis) {
+        if (thisClass instanceof HasNameIndex nis) {
             return nis.name_index();
         }
         throw new RuntimeException("Class " + thisClass + " does not have a NameIndex");
@@ -88,8 +88,8 @@ public class BytecodeParser {
     private String getNameOfFile() {
         int idx = nameIndexOfFile();
         ConstantPoolItem elem = this.constantPoolItems.get(idx - 1);
-        if (elem instanceof Bytes bytesElement) {
-            byte[] bytes = bytesElement.bytes();
+        if (elem instanceof HasBytes hasBytesElement) {
+            byte[] bytes = hasBytesElement.bytes();
             return new String(bytes);
         }
         throw new RuntimeException("Class " + thisClass + " does not have a NameIndex");

@@ -1,5 +1,5 @@
 package estamosremoto.utils.bytecode.util.attributes;
 
-public interface NameAndTypeIndex {
+public interface HasNameAndTypeIndex {
     int nameAndTypeIndex();
 }
