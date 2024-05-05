@@ -1,6 +1,6 @@
 package estamosremoto.utils.bytecode;
 
-public record BytecodeModel(
+public record VersionMetadata(
         String magic,
         int minorVersion,
         int majorVersion,
