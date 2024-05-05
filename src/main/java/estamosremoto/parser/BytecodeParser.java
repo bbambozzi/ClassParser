@@ -19,8 +19,8 @@ public class BytecodeParser {
     private final VersionMetadata versionMetadata;
     private final List<ConstantPoolItem> constantPoolItems;
     private final List<AccessFlag> accessFlags;
-    private ConstantPoolItem thisClass;
-    private ConstantPoolItem superclass;
+    private final ConstantPoolItem thisClass;
+    private final ConstantPoolItem superclass;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
@@ -40,17 +40,6 @@ public class BytecodeParser {
         return String.format("%02X", byt);
     }
 
-    int getAccessFlagsMask() {
-        return ByteChannelParser.parseU2(byteChannel);
-    }
-    int getThisClassIndex() {
-        return ByteChannelParser.parseU2(byteChannel) - 1;
-    }
-
-    int getThisSuperclassIndex() {
-        return ByteChannelParser.parseU2(byteChannel) - 1;
-    }
-
     private static String toHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
         for (byte b : bytes) {
@@ -67,6 +56,18 @@ public class BytecodeParser {
             System.exit(1);
             return null;
         }
+    }
+
+    int getAccessFlagsMask() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+
+    int getThisClassIndex() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+
+    int getThisSuperclassIndex() {
+        return ByteChannelParser.parseU2(byteChannel);
     }
 
     private VersionMetadata getVersionMetadata() {
