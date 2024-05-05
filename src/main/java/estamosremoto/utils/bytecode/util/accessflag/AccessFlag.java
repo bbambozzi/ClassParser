@@ -1,8 +1,6 @@
 package estamosremoto.utils.bytecode.util.accessflag;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public enum AccessFlag {
     ACC_PUBLIC(0x0001),
@@ -14,6 +12,7 @@ public enum AccessFlag {
     ACC_ANNOTATION(0x2000),
     ACC_ENUM(0x4000),
     ACC_MODULE(0x8000);
+    public static final Map<Integer, AccessFlag> publicMap;
     private static final Map<Integer, AccessFlag> map;
 
     static {
@@ -22,12 +21,24 @@ public enum AccessFlag {
             elements.put(flag.value, flag);
         }
         map = Collections.unmodifiableMap(elements);
+        publicMap = Collections.unmodifiableMap(elements);
     }
 
     private final int value;
 
     AccessFlag(int value) {
         this.value = value;
+    }
+
+    public static List<AccessFlag> getMatching(int mask) {
+        System.out.println("got mask " + mask);
+        List<AccessFlag> result = new ArrayList<>();
+        for (AccessFlag flag : AccessFlag.values()) {
+            if ((mask & flag.value) != 0) {
+                result.add(flag);
+            }
+        }
+        return result;
     }
 
     public AccessFlag parse(int value) {

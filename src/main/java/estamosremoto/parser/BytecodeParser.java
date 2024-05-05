@@ -1,8 +1,9 @@
 package estamosremoto.parser;
 
 import estamosremoto.utils.bytechannel.ByteChannelParser;
-import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
+import estamosremoto.utils.bytecode.VersionMetadata;
+import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
 import estamosremoto.utils.logger.ColorLogger;
 
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BytecodeParser {
@@ -18,33 +18,37 @@ public class BytecodeParser {
     private final SeekableByteChannel byteChannel;
     private final VersionMetadata versionMetadata;
     private final List<ConstantPoolItem> constantPoolItems;
+    private final List<AccessFlag> accessFlags;
+    private ConstantPoolItem thisClass;
+    private ConstantPoolItem superclass;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
         this.versionMetadata = getVersionMetadata();
         this.constantPoolItems = getConstantPoolItems();
-        logger.green("bytecode model = " + versionMetadata.toString());
+        this.accessFlags = AccessFlag.getMatching(getAccessFlagsMask());
+        this.thisClass = constantPoolItems.get(getThisClassIndex());
+        this.superclass = constantPoolItems.get(getThisSuperclassIndex());
+        logger.green("bytecode model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
-    }
-
-
-    private VersionMetadata getVersionMetadata() {
-        try {
-            this.byteChannel.position(0);
-            String magicString = toHex(ByteChannelParser.parseU4(this.byteChannel));
-            int minorVersion = ByteChannelParser.parseU2(byteChannel);
-            int majorVersion = ByteChannelParser.parseU2(byteChannel);
-            int constantPoolCount = ByteChannelParser.parseU2(byteChannel);
-            return new VersionMetadata(magicString, minorVersion, majorVersion, constantPoolCount);
-        } catch (IOException e) {
-            logger.red("Failed to parse version metadata");
-            System.exit(0);
-            return new VersionMetadata("", 0, 0, 0);
-        }
+        logger.green("Access flags = " + accessFlags);
+        logger.green("this class = " + thisClass);
+        logger.green("this superclass = " + superclass);
     }
 
     private static String toHex(byte byt) {
         return String.format("%02X", byt);
+    }
+
+    int getAccessFlagsMask() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+    int getThisClassIndex() {
+        return ByteChannelParser.parseU2(byteChannel) - 1;
+    }
+
+    int getThisSuperclassIndex() {
+        return ByteChannelParser.parseU2(byteChannel) - 1;
     }
 
     private static String toHex(byte[] bytes) {
@@ -65,6 +69,20 @@ public class BytecodeParser {
         }
     }
 
+    private VersionMetadata getVersionMetadata() {
+        try {
+            this.byteChannel.position(0);
+            String magicString = toHex(ByteChannelParser.parseU4(this.byteChannel));
+            int minorVersion = ByteChannelParser.parseU2(byteChannel);
+            int majorVersion = ByteChannelParser.parseU2(byteChannel);
+            int constantPoolCount = ByteChannelParser.parseU2(byteChannel);
+            return new VersionMetadata(magicString, minorVersion, majorVersion, constantPoolCount);
+        } catch (IOException e) {
+            logger.red("Failed to parse version metadata");
+            System.exit(0);
+            return new VersionMetadata("", 0, 0, 0);
+        }
+    }
 
     private List<ConstantPoolItem> getConstantPoolItems() {
         try {
