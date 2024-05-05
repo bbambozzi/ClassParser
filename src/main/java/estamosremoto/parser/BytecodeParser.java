@@ -4,9 +4,9 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
-import estamosremoto.utils.bytecode.util.constantpool.Bytes;
-import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
-import estamosremoto.utils.bytecode.util.constantpool.NameIndex;
+import estamosremoto.utils.bytecode.util.attributes.Bytes;
+import estamosremoto.utils.bytecode.util.attributes.ConstantPoolItem;
+import estamosremoto.utils.bytecode.util.attributes.NameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -25,6 +25,7 @@ public class BytecodeParser {
     private final ConstantPoolItem superclass;
     private final int interfaceCount;
     private final int fieldsCount;
+    private final int methodsCount;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
@@ -33,12 +34,15 @@ public class BytecodeParser {
         this.accessFlags = AccessFlag.getMatching(getAccessFlagsMask());
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
-        this.interfaceCount = getInterfaceCount();
-        this.fieldsCount = getFieldsCount();
+        this.interfaceCount = parseInterfaceCount();
+        // todo this.interfaces
+        this.fieldsCount = parseFieldsCount();
+        // todo this.fields
+        this.methodsCount = parseMethodsCount();
+        // todo this.methods
         if (interfaceCount > 0 || fieldsCount > 0) {
             throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
         }
-        // this.interfaces // todo
         logger.green("bytecode model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
         logger.green("Access flags = " + accessFlags);
@@ -46,6 +50,7 @@ public class BytecodeParser {
         logger.green("this superclass = " + superclass);
         logger.green("interface count = " + interfaceCount);
         logger.green("fields count = " + fieldsCount);
+        logger.green("methods count = " + methodsCount);
         logger.green("name index of file = " + nameIndexOfFile());
         logger.green("name of file " + getNameOfFile());
     }
@@ -102,11 +107,15 @@ public class BytecodeParser {
         return ByteChannelParser.parseU2(byteChannel) - 1;
     }
 
-    private int getInterfaceCount() {
+    private int parseInterfaceCount() {
         return ByteChannelParser.parseU2(byteChannel);
     }
 
-    private int getFieldsCount() {
+    private int parseFieldsCount() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+
+    private int parseMethodsCount() {
         return ByteChannelParser.parseU2(byteChannel);
     }
 

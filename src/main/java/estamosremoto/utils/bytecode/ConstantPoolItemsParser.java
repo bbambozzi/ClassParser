@@ -1,5 +1,6 @@
 package estamosremoto.utils.bytecode;
 
+import estamosremoto.utils.bytecode.util.attributes.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.constantpool.*;
 import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 import estamosremoto.utils.logger.ColorLogger;

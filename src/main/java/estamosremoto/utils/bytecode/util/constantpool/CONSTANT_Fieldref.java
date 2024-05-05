@@ -2,6 +2,8 @@ package estamosremoto.utils.bytecode.util.constantpool;
 
 
 import estamosremoto.utils.bytechannel.ByteChannelParser;
+import estamosremoto.utils.bytecode.util.attributes.ClassIndex;
+import estamosremoto.utils.bytecode.util.attributes.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 
 import java.nio.channels.ByteChannel;
