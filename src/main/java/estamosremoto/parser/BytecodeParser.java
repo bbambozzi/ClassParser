@@ -27,6 +27,7 @@ public class BytecodeParser {
         logger.green("constant pool items = " + constantPoolItems);
     }
 
+
     private VersionMetadata getVersionMetadata() {
         try {
             this.byteChannel.position(0);

@@ -10,11 +10,11 @@ public class ByteChannelParser {
 
     public static final ColorLogger logger = new ColorLogger();
 
-    public static byte parseU1(ByteChannel byteChannel) {
-        ByteBuffer buffer = ByteBuffer.allocate(2);
+    public static int parseU1(ByteChannel byteChannel) {
+        ByteBuffer buffer = ByteBuffer.allocate(1);
         try {
             byteChannel.read(buffer);
-            return buffer.get(0);
+            return buffer.get(0) & 0xff;
         } catch (IOException e) {
             logger.red("Failed to parse U1 at position " + buffer.position());
         }
@@ -26,7 +26,7 @@ public class ByteChannelParser {
         ByteBuffer buffer = ByteBuffer.allocate(2);
         try {
             byteChannel.read(buffer);
-            return buffer.getShort(0);
+            return buffer.getShort(0) & 0xffff;
         } catch (IOException e) {
             logger.red("Failed to parse U2 at position " + buffer.position());
             System.exit(1);
