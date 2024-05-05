@@ -34,7 +34,7 @@ public class BytecodeParser {
     private final int methodsCount;
     private final List<Method> methods;
     private final int attributesCount;
-    private final List<AttributeInfo> attributeInfo; // todo
+    private final List<AttributeInfo> attributeInfo;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
