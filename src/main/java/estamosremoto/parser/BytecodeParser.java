@@ -5,7 +5,7 @@ import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
 import estamosremoto.utils.bytecode.util.attributes.HasBytes;
-import estamosremoto.utils.bytecode.util.attributes.ConstantPoolItem;
+import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.attributes.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
