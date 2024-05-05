@@ -4,9 +4,9 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
-import estamosremoto.utils.bytecode.util.attributes.HasBytes;
+import estamosremoto.utils.bytecode.util.properties.HasBytes;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
-import estamosremoto.utils.bytecode.util.attributes.HasNameIndex;
+import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;

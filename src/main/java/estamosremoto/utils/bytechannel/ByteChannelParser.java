@@ -47,6 +47,20 @@ public class ByteChannelParser {
         }
     }
 
+    public static long parseU4L(ByteChannel byteChannel) {
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        try {
+            byteChannel.read(buffer);
+            int unsignedInt = buffer.getInt();
+            long ans =  unsignedInt & 0xffffffffL;
+            return ans;
+        } catch (IOException e) {
+            logger.red("Failed to parse U1 at position " + buffer.position());
+            System.exit(1);
+            return -1;
+        }
+    }
+
     public static byte[] parseBytes(ByteChannel byteChannel, int amount) {
         ByteBuffer buffer = ByteBuffer.allocate(amount);
         try {
@@ -58,4 +72,5 @@ public class ByteChannelParser {
             return buffer.array();
         }
     }
+
 }
