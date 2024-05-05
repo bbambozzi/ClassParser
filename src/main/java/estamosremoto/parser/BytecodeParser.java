@@ -5,9 +5,10 @@ import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.ClassAccessFlag;
 import estamosremoto.utils.bytecode.util.attribute.AttributeInfo;
+import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
+import estamosremoto.utils.bytecode.util.field.Field;
 import estamosremoto.utils.bytecode.util.method.Method;
 import estamosremoto.utils.bytecode.util.properties.HasBytes;
-import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
 import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
@@ -27,7 +28,9 @@ public class BytecodeParser {
     private final ConstantPoolItem thisClass;
     private final ConstantPoolItem superclass;
     private final int interfaceCount;
+    private final byte[] interfaces;
     private final int fieldsCount;
+    private final List<Field> fields;
     private final int methodsCount;
     private final List<Method> methods;
     private final int attributesCount;
@@ -41,9 +44,9 @@ public class BytecodeParser {
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
         this.interfaceCount = parseInterfaceCount();
-        // todo this.interfaces
+        this.interfaces = parseInterfaces();
         this.fieldsCount = parseFieldsCount();
-        // todo this.fields
+        this.fields = parseFields();
         if (interfaceCount > 0 || fieldsCount > 0) {
             throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
         }
@@ -105,6 +108,7 @@ public class BytecodeParser {
         }
         throw new RuntimeException("Class " + thisClass + " does not have a NameIndex");
     }
+
 
     private int getAccessFlagsMask() {
         return ByteChannelParser.parseU2(byteChannel);
@@ -169,16 +173,30 @@ public class BytecodeParser {
     private List<Method> parseMethodItems() {
         logger.green("about to parse the method items!");
         List<Method> answer = new ArrayList<>();
-        for (int i = 0 ; i < methodsCount ; i++) {
+        for (int i = 0; i < methodsCount; i++) {
             answer.add(new Method(byteChannel));
         }
         return answer;
     }
 
+    private List<Field> parseFields() {
+        logger.green("parsing fields");
+        List<Field> answer = new ArrayList<>();
+        for (int i = 0; i < fieldsCount; i++) {
+            answer.add(new Field(byteChannel));
+        }
+        return answer;
+    }
+
+    private byte[] parseInterfaces() {
+        logger.green("parsing interfaces");
+        return ByteChannelParser.parseBytes(byteChannel, interfaceCount);
+    }
+
     private List<AttributeInfo> parseAttributesInfo() {
         logger.green("about  to parse the attribute info for the class!");
         List<AttributeInfo> answer = new ArrayList<>();
-        for (int i = 0 ; i < attributesCount ; i++) {
+        for (int i = 0; i < attributesCount; i++) {
             answer.add(new AttributeInfo(byteChannel));
         }
         return answer;
