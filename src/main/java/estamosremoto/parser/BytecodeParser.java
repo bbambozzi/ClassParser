@@ -24,6 +24,7 @@ public class BytecodeParser {
     private final ConstantPoolItem thisClass;
     private final ConstantPoolItem superclass;
     private final int interfaceCount;
+    private final int fieldsCount;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
@@ -33,12 +34,18 @@ public class BytecodeParser {
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
         this.interfaceCount = getInterfaceCount();
+        this.fieldsCount = getFieldsCount();
+        if (interfaceCount > 0 || fieldsCount > 0) {
+            throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
+        }
+        // this.interfaces // todo
         logger.green("bytecode model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
         logger.green("Access flags = " + accessFlags);
         logger.green("this class = " + thisClass);
         logger.green("this superclass = " + superclass);
         logger.green("interface count = " + interfaceCount);
+        logger.green("fields count = " + fieldsCount);
         logger.green("name index of file = " + nameIndexOfFile());
         logger.green("name of file " + getNameOfFile());
     }
@@ -96,6 +103,10 @@ public class BytecodeParser {
     }
 
     private int getInterfaceCount() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+
+    private int getFieldsCount() {
         return ByteChannelParser.parseU2(byteChannel);
     }
 
