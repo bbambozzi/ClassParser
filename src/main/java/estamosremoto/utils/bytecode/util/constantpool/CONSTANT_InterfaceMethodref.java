@@ -1,4 +1,4 @@
-package estamosremoto.utils.bytecode.util.item;
+package estamosremoto.utils.bytecode.util.constantpool;
 
 
 import estamosremoto.utils.bytechannel.ByteChannelParser;

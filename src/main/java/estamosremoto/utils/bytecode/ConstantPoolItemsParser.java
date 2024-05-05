@@ -1,6 +1,6 @@
 package estamosremoto.utils.bytecode;
 
-import estamosremoto.utils.bytecode.util.item.*;
+import estamosremoto.utils.bytecode.util.constantpool.*;
 import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 import estamosremoto.utils.logger.ColorLogger;
 
@@ -34,7 +34,7 @@ public record ConstantPoolItemsParser() {
                 case CONSTANT_Package -> new CONSTANT_Package(channel);
                 case CONSTANT_Module -> new CONSTANT_Module(channel);
             };
-            logger.green("Added Constant pool item = " + constantPoolItemToAdd);
+            logger.green("Added Constant pool constantpool = " + constantPoolItemToAdd);
             constantPoolItems.add(constantPoolItemToAdd);
         }
         return constantPoolItems;
