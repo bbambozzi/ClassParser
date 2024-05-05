@@ -5,7 +5,7 @@ import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 
 import java.nio.channels.ByteChannel;
 
-public record CONSTANT_Class(ConstantPoolTag tag, int name_index) implements ConstantPoolItem {
+public record CONSTANT_Class(ConstantPoolTag tag, int name_index) implements ConstantPoolItem, NameIndex {
     public CONSTANT_Class(ByteChannel channel) {
         this(ConstantPoolTag.CONSTANT_Class, getNameIndex(channel));
     }

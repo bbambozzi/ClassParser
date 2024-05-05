@@ -4,7 +4,9 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.AccessFlag;
+import estamosremoto.utils.bytecode.util.constantpool.Bytes;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
+import estamosremoto.utils.bytecode.util.constantpool.NameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class BytecodeParser {
     private final List<AccessFlag> accessFlags;
     private final ConstantPoolItem thisClass;
     private final ConstantPoolItem superclass;
+    private final int interfaceCount;
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
@@ -29,11 +32,15 @@ public class BytecodeParser {
         this.accessFlags = AccessFlag.getMatching(getAccessFlagsMask());
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
+        this.interfaceCount = getInterfaceCount();
         logger.green("bytecode model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
         logger.green("Access flags = " + accessFlags);
         logger.green("this class = " + thisClass);
         logger.green("this superclass = " + superclass);
+        logger.green("interface count = " + interfaceCount);
+        logger.green("name index of file = " + nameIndexOfFile());
+        logger.green("name of file " + getNameOfFile());
     }
 
     private static String toHex(byte byt) {
@@ -58,17 +65,40 @@ public class BytecodeParser {
         }
     }
 
-    int getAccessFlagsMask() {
+
+    private int nameIndexOfFile() {
+        if (thisClass instanceof NameIndex nis) {
+            return nis.name_index();
+        }
+        throw new RuntimeException("Class " + thisClass + " does not have a NameIndex");
+    }
+
+    private String getNameOfFile() {
+        int idx = nameIndexOfFile();
+        ConstantPoolItem elem = this.constantPoolItems.get(idx - 1);
+        if (elem instanceof Bytes bytesElement) {
+            byte[] bytes = bytesElement.bytes();
+            return new String(bytes);
+        }
+        throw new RuntimeException("Class " + thisClass + " does not have a NameIndex");
+    }
+
+    private int getAccessFlagsMask() {
         return ByteChannelParser.parseU2(byteChannel);
     }
 
-    int getThisClassIndex() {
+    private int getThisClassIndex() {
+        return ByteChannelParser.parseU2(byteChannel) - 1;
+    }
+
+    private int getThisSuperclassIndex() {
+        return ByteChannelParser.parseU2(byteChannel) - 1;
+    }
+
+    private int getInterfaceCount() {
         return ByteChannelParser.parseU2(byteChannel);
     }
 
-    int getThisSuperclassIndex() {
-        return ByteChannelParser.parseU2(byteChannel);
-    }
 
     private VersionMetadata getVersionMetadata() {
         try {

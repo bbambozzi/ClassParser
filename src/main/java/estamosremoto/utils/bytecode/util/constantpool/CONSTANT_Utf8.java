@@ -6,7 +6,7 @@ import estamosremoto.utils.bytecode.util.tag.ConstantPoolTag;
 import java.nio.channels.ByteChannel;
 import java.nio.charset.StandardCharsets;
 
-public record CONSTANT_Utf8(ConstantPoolTag tag, int length, byte[] bytes) implements ConstantPoolItem {
+public record CONSTANT_Utf8(ConstantPoolTag tag, int length, byte[] bytes) implements ConstantPoolItem, Bytes {
     public CONSTANT_Utf8(ByteChannel channel) {
         int length = ByteChannelParser.parseU2(channel);
         byte[] bytes = ByteChannelParser.parseBytes(channel, length);
