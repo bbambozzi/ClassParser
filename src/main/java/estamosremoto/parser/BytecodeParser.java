@@ -4,6 +4,7 @@ import estamosremoto.utils.bytechannel.ByteChannelParser;
 import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
 import estamosremoto.utils.bytecode.VersionMetadata;
 import estamosremoto.utils.bytecode.util.accessflag.ClassAccessFlag;
+import estamosremoto.utils.bytecode.util.attribute.AttributeInfo;
 import estamosremoto.utils.bytecode.util.method.Method;
 import estamosremoto.utils.bytecode.util.properties.HasBytes;
 import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
@@ -29,6 +30,8 @@ public class BytecodeParser {
     private final int fieldsCount;
     private final int methodsCount;
     private final List<Method> methods;
+    private final int attributesCount;
+    private final List<AttributeInfo> attributeInfo; // todo
 
     public BytecodeParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
@@ -41,11 +44,13 @@ public class BytecodeParser {
         // todo this.interfaces
         this.fieldsCount = parseFieldsCount();
         // todo this.fields
-        this.methodsCount = parseMethodsCount();
-        this.methods = parseMethodItems();
         if (interfaceCount > 0 || fieldsCount > 0) {
             throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
         }
+        this.methodsCount = parseMethodsCount();
+        this.methods = parseMethodItems();
+        this.attributesCount = parseAttributesCount();
+        this.attributeInfo = parseAttributesInfo();
         logger.green("bytecode model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
         logger.green("Access flags = " + accessFlags);
@@ -55,6 +60,8 @@ public class BytecodeParser {
         logger.green("fields count = " + fieldsCount);
         logger.green("methods count = " + methodsCount);
         logger.green("method items = " + methods);
+        logger.green("attributes count = " + attributesCount);
+        logger.green("attributes info = " + attributeInfo);
         logger.green("name index of file = " + nameIndexOfFile());
         logger.green("name of file " + getNameOfFile());
     }
@@ -124,6 +131,11 @@ public class BytecodeParser {
     }
 
 
+    private int parseAttributesCount() {
+        return ByteChannelParser.parseU2(byteChannel);
+    }
+
+
     private VersionMetadata getVersionMetadata() {
         try {
             this.byteChannel.position(0);
@@ -159,6 +171,15 @@ public class BytecodeParser {
         List<Method> answer = new ArrayList<>();
         for (int i = 0 ; i < methodsCount ; i++) {
             answer.add(new Method(byteChannel));
+        }
+        return answer;
+    }
+
+    private List<AttributeInfo> parseAttributesInfo() {
+        logger.green("about  to parse the attribute info for the class!");
+        List<AttributeInfo> answer = new ArrayList<>();
+        for (int i = 0 ; i < attributesCount ; i++) {
+            answer.add(new AttributeInfo(byteChannel));
         }
         return answer;
     }
