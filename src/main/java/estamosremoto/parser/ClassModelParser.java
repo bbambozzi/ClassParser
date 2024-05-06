@@ -1,15 +1,15 @@
 package estamosremoto.parser;
 
 import estamosremoto.utils.bytechannel.ByteChannelParser;
-import estamosremoto.utils.bytecode.ConstantPoolItemsParser;
-import estamosremoto.utils.bytecode.VersionMetadata;
-import estamosremoto.utils.bytecode.util.accessflag.ClassAccessFlag;
-import estamosremoto.utils.bytecode.util.attribute.AttributeInfo;
-import estamosremoto.utils.bytecode.util.constantpool.ConstantPoolItem;
-import estamosremoto.utils.bytecode.util.field.Field;
-import estamosremoto.utils.bytecode.util.method.Method;
-import estamosremoto.utils.bytecode.util.properties.HasBytes;
-import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
+import estamosremoto.utils.classmodel.ConstantPoolItemsParser;
+import estamosremoto.utils.classmodel.VersionMetadata;
+import estamosremoto.utils.classmodel.util.accessflag.ClassAccessFlag;
+import estamosremoto.utils.classmodel.util.attribute.AttributeInfo;
+import estamosremoto.utils.classmodel.util.constantpool.ConstantPoolItem;
+import estamosremoto.utils.classmodel.util.field.Field;
+import estamosremoto.utils.classmodel.util.method.Method;
+import estamosremoto.utils.classmodel.util.properties.HasBytes;
+import estamosremoto.utils.classmodel.util.properties.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -56,7 +56,7 @@ public class ClassModelParser {
         this.methods = parseMethodItems();
         this.attributesCount = parseAttributesCount();
         this.attributeInfo = parseAttributesInfo();
-        logger.green("bytecode model = " + versionMetadata);
+        logger.green("classmodel model = " + versionMetadata);
         logger.green("constant pool items = " + constantPoolItems);
         logger.green("Access flags = " + accessFlags);
         logger.green("this class = " + thisClass);
@@ -167,7 +167,7 @@ public class ClassModelParser {
 
 
         } catch (Exception err) {
-            logger.red("Failed to parse bytecode model!");
+            logger.red("Failed to parse classmodel model!");
             logger.red(err.getMessage());
             System.exit(1);
             return null;
