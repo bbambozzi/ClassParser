@@ -44,9 +44,9 @@ public class BytecodeParser {
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
         this.interfaceCount = parseInterfaceCount();
-        this.interfaces = parseInterfaces();
+        this.interfaces = new byte[] {};
         this.fieldsCount = parseFieldsCount();
-        this.fields = parseFields();
+        this.fields = new ArrayList<>();
         if (interfaceCount > 0 || fieldsCount > 0) {
             throw new IllegalArgumentException("Parsing interfaces or fields is not yet implemented");
         }
@@ -67,6 +67,8 @@ public class BytecodeParser {
         logger.green("attributes info = " + attributeInfo);
         logger.green("name index of file = " + nameIndexOfFile());
         logger.green("name of file " + getNameOfFile());
+        logger.green("methods = [");
+        printAllMethods();
     }
 
     private static String toHex(byte byt) {
@@ -204,8 +206,14 @@ public class BytecodeParser {
 
     private void printAllMethods() {
         for (Method method : methods) {
-            var dec_index = method.descriptor_index();
-            // todo print them properly from the pool
+            var name_index = method.name_index();
+            logger.gray("got index = " + name_index);
+            ConstantPoolItem item = constantPoolItems.get(name_index- 1);
+            if (item instanceof HasNameIndex found) {
+                logger.green(constantPoolItems.get(found.name_index()).toString());
+            } else {
+                logger.green(item.toString());
+            }
         }
     }
 }

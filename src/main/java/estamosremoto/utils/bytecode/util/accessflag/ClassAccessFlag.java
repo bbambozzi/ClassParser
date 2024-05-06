@@ -31,7 +31,6 @@ public enum ClassAccessFlag {
     }
 
     public static List<ClassAccessFlag> getMatching(int mask) {
-        System.out.println("got mask " + mask);
         List<ClassAccessFlag> result = new ArrayList<>();
         for (ClassAccessFlag flag : ClassAccessFlag.values()) {
             if ((mask & flag.value) != 0) {

@@ -26,6 +26,7 @@ public class ByteChannelParser {
         ByteBuffer buffer = ByteBuffer.allocate(2);
         try {
             byteChannel.read(buffer);
+            buffer.flip();
             return buffer.getShort(0) & 0xffff;
         } catch (IOException e) {
             logger.red("Failed to parse U2 at position " + buffer.position());
@@ -39,6 +40,7 @@ public class ByteChannelParser {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         try {
             byteChannel.read(buffer);
+            buffer.flip();
             return buffer.array();
         } catch (IOException e) {
             logger.red("Failed to parse U1 at position " + buffer.position());
@@ -50,9 +52,14 @@ public class ByteChannelParser {
     public static long parseU4L(ByteChannel byteChannel) {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         try {
-            byteChannel.read(buffer);
+            int bytesRead = byteChannel.read(buffer);
+            if (bytesRead != 4) {
+                logger.red("could not read 4 bytes");
+            }
+            buffer.flip();
             int unsignedInt = buffer.getInt();
-            long ans =  unsignedInt & 0xffffffffL;
+            long ans =  unsignedInt & 0xFFFFFFFFL;
+            buffer.clear();
             return ans;
         } catch (IOException e) {
             logger.red("Failed to parse U1 at position " + buffer.position());
@@ -60,6 +67,7 @@ public class ByteChannelParser {
             return -1;
         }
     }
+
 
     public static byte[] parseBytes(ByteChannel byteChannel, int amount) {
         ByteBuffer buffer = ByteBuffer.allocate(amount);
