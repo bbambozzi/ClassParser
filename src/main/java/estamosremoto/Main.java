@@ -1,10 +1,14 @@
 package estamosremoto;
 
 import estamosremoto.parser.BytecodeParser;
+import estamosremoto.utils.bytecode.util.attribute.AttributeInfo;
+import estamosremoto.utils.bytecode.util.method.Method;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -16,9 +20,8 @@ public class Main {
         System.out.println("Got path: " + args[0]);
         Path path = Path.of(args[0]);
         BytecodeParser bytecodeParser = new BytecodeParser(path);
-        byte[] mainInBytes = "main".getBytes();
-        bytecodeParser.findMethodByNameIndex(mainInBytes);
-        logger.green("Finished parsing successfully!");
+        byte[] bytecode = bytecodeParser.findMainMethodBytecode();
+        System.out.println(new String(bytecode, StandardCharsets.UTF_8).length());
         System.exit(0);
     }
 }

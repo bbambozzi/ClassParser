@@ -218,15 +218,42 @@ public class BytecodeParser {
     }
 
 
-    public Method findMethodByNameIndex(byte[] name) {
+    public List<Method> findMethodsByName(byte[] name) {
+        List<Method> answer = new ArrayList<>();
         for (Method item : methods) {
             ConstantPoolItem possibleAnswer = constantPoolItems.get(item.name_index() - 1);
             if (possibleAnswer instanceof HasBytes found) {
                 if (Arrays.equals(name, found.bytes())) {
-                    return item;
+                    answer.add(item);
                 }
             }
         }
-        throw new IllegalArgumentException("Method not found");
+        return answer;
+    }
+
+    public List<AttributeInfo> findAttributeInfoByName(List<AttributeInfo> atttributes, byte[] name) {
+            List<AttributeInfo> answer = new ArrayList<>();
+        for (AttributeInfo attribute : atttributes) {
+            var item = constantPoolItems.get(attribute.attribute_name_index() - 1);
+            if (item instanceof HasBytes found) {
+                if (Arrays.equals(name, found.bytes())) {
+                    answer.add(attribute);
+                }
+            }
+        }
+        return answer;
+    }
+
+    public AttributeInfo findCodeByName(List<AttributeInfo> atttributes) {
+        return findAttributeInfoByName(atttributes, "Code".getBytes()).getFirst();
+    }
+
+    public AttributeInfo findMainMethodAttributeInfo() {
+        Method method =  findMethodsByName("main".getBytes()).getFirst();
+        return findCodeByName(method.attribute_info());
+    }
+
+    public byte[] findMainMethodBytecode() {
+        return findMainMethodAttributeInfo().info();
     }
 }
