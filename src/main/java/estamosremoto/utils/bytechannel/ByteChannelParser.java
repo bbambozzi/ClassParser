@@ -14,7 +14,8 @@ public class ByteChannelParser {
         ByteBuffer buffer = ByteBuffer.allocate(1);
         try {
             byteChannel.read(buffer);
-            return buffer.get(0) & 0xff;
+            buffer.flip();
+            return buffer.get() & 0xff;
         } catch (IOException e) {
             logger.red("Failed to parse U1 at position " + buffer.position());
         }
