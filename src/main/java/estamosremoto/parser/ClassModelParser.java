@@ -13,6 +13,7 @@ import estamosremoto.utils.bytecode.util.properties.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class BytecodeParser {
+public class ClassModelParser {
     static final ColorLogger logger = new ColorLogger();
     private final SeekableByteChannel byteChannel;
     private final VersionMetadata versionMetadata;
@@ -37,7 +38,7 @@ public class BytecodeParser {
     private final int attributesCount;
     private final List<AttributeInfo> attributeInfo;
 
-    public BytecodeParser(Path pathToBytecode) {
+    public ClassModelParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
         this.versionMetadata = getVersionMetadata();
         this.constantPoolItems = parseConstantPoolItems();
@@ -253,7 +254,12 @@ public class BytecodeParser {
         return findCodeByName(method.attribute_info());
     }
 
-    public byte[] findMainMethodBytecode() {
+    public byte[] findMainMethodBytecodeBytes() {
         return findMainMethodAttributeInfo().info();
+    }
+
+    public ByteBuffer findMainMethodBytecode() {
+        var bytes = findMainMethodBytecodeBytes();
+        return ByteBuffer.wrap(bytes);
     }
 }
