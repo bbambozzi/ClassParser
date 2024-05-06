@@ -16,6 +16,8 @@ public class Main {
         System.out.println("Got path: " + args[0]);
         Path path = Path.of(args[0]);
         BytecodeParser bytecodeParser = new BytecodeParser(path);
+        byte[] mainInBytes = "main".getBytes();
+        bytecodeParser.findMethodByNameIndex(mainInBytes);
         logger.green("Finished parsing successfully!");
         System.exit(0);
     }

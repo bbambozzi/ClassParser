@@ -17,6 +17,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BytecodeParser {
@@ -207,7 +208,6 @@ public class BytecodeParser {
     private void printAllMethods() {
         for (Method method : methods) {
             var name_index = method.name_index();
-            logger.gray("got index = " + name_index);
             ConstantPoolItem item = constantPoolItems.get(name_index- 1);
             if (item instanceof HasNameIndex found) {
                 logger.green(constantPoolItems.get(found.name_index()).toString());
@@ -215,5 +215,18 @@ public class BytecodeParser {
                 logger.green(item.toString());
             }
         }
+    }
+
+
+    public Method findMethodByNameIndex(byte[] name) {
+        for (Method item : methods) {
+            ConstantPoolItem possibleAnswer = constantPoolItems.get(item.name_index() - 1);
+            if (possibleAnswer instanceof HasBytes found) {
+                if (Arrays.equals(name, found.bytes())) {
+                    return item;
+                }
+            }
+        }
+        throw new IllegalArgumentException("Method not found");
     }
 }
