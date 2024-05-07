@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>Bautista Bambozzi</groupId>
-    <artifactId>bJVM</artifactId>
-    <version>1.0-Alpha</version>
+    <artifactId>bClassParser</artifactId>
+    <version>1.0</version>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>
