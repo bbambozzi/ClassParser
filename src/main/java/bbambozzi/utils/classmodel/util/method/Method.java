@@ -1,10 +1,10 @@
-package estamosremoto.utils.classmodel.util.method;
+package bbambozzi.utils.classmodel.util.method;
 
-import estamosremoto.utils.bytechannel.ByteChannelParser;
-import estamosremoto.utils.classmodel.util.accessflag.MethodAccessFlag;
-import estamosremoto.utils.classmodel.util.attribute.AttributeInfo;
-import estamosremoto.utils.classmodel.util.properties.HasDescriptorIndex;
-import estamosremoto.utils.classmodel.util.properties.HasNameIndex;
+import bbambozzi.utils.bytechannel.ByteChannelParser;
+import bbambozzi.utils.classmodel.util.accessflag.MethodAccessFlag;
+import bbambozzi.utils.classmodel.util.attribute.AttributeInfo;
+import bbambozzi.utils.classmodel.util.properties.HasDescriptorIndex;
+import bbambozzi.utils.classmodel.util.properties.HasNameIndex;
 
 import java.nio.channels.ByteChannel;
 import java.util.ArrayList;

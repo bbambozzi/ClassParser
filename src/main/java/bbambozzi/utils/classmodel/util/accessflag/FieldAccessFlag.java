@@ -1,4 +1,4 @@
-package estamosremoto.utils.classmodel.util.accessflag;
+package bbambozzi.utils.classmodel.util.accessflag;
 
 import java.util.*;
 

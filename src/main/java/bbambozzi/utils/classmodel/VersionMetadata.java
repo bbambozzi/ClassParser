@@ -1,4 +1,4 @@
-package estamosremoto.utils.classmodel;
+package bbambozzi.utils.classmodel;
 
 public record VersionMetadata(
         String magic,

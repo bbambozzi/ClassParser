@@ -1,9 +1,9 @@
-package estamosremoto.utils.classmodel;
+package bbambozzi.utils.classmodel;
 
-import estamosremoto.utils.classmodel.util.constantpool.ConstantPoolItem;
-import estamosremoto.utils.classmodel.util.constantpool.*;
-import estamosremoto.utils.classmodel.util.tag.ConstantPoolTag;
-import estamosremoto.utils.logger.ColorLogger;
+import bbambozzi.utils.classmodel.util.constantpool.ConstantPoolItem;
+import bbambozzi.utils.classmodel.util.constantpool.*;
+import bbambozzi.utils.classmodel.util.tag.ConstantPoolTag;
+import bbambozzi.utils.logger.ColorLogger;
 
 import java.nio.channels.ByteChannel;
 import java.util.ArrayList;

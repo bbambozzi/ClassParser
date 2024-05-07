@@ -1,6 +1,6 @@
-package estamosremoto.utils.bytechannel;
+package bbambozzi.utils.bytechannel;
 
-import estamosremoto.utils.logger.ColorLogger;
+import bbambozzi.utils.logger.ColorLogger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

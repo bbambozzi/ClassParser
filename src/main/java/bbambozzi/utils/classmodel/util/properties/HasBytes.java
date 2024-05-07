@@ -1,4 +1,4 @@
-package estamosremoto.utils.classmodel.util.properties;
+package bbambozzi.utils.classmodel.util.properties;
 
 public interface HasBytes {
     byte[] bytes();

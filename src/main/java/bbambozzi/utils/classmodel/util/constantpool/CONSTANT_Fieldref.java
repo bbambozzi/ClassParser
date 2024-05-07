@@ -1,9 +1,9 @@
-package estamosremoto.utils.classmodel.util.constantpool;
+package bbambozzi.utils.classmodel.util.constantpool;
 
 
-import estamosremoto.utils.bytechannel.ByteChannelParser;
-import estamosremoto.utils.classmodel.util.properties.HasClassIndex;
-import estamosremoto.utils.classmodel.util.tag.ConstantPoolTag;
+import bbambozzi.utils.bytechannel.ByteChannelParser;
+import bbambozzi.utils.classmodel.util.properties.HasClassIndex;
+import bbambozzi.utils.classmodel.util.tag.ConstantPoolTag;
 
 import java.nio.channels.ByteChannel;
 

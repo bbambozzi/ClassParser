@@ -1,6 +1,6 @@
-package estamosremoto.utils.classmodel.util.attribute;
+package bbambozzi.utils.classmodel.util.attribute;
 
-import estamosremoto.utils.bytechannel.ByteChannelParser;
+import bbambozzi.utils.bytechannel.ByteChannelParser;
 
 import java.nio.channels.ByteChannel;
 

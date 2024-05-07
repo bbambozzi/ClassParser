@@ -1,4 +1,4 @@
-package estamosremoto.utils.logger;
+package bbambozzi.utils.logger;
 
 public class ColorLogger {
 

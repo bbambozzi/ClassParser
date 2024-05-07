@@ -1,17 +1,17 @@
-package estamosremoto.parser;
+package bbambozzi.parser;
 
-import estamosremoto.utils.bytechannel.ByteChannelParser;
-import estamosremoto.utils.classmodel.ConstantPoolItemsParser;
-import estamosremoto.utils.classmodel.VersionMetadata;
-import estamosremoto.utils.classmodel.util.accessflag.ClassAccessFlag;
-import estamosremoto.utils.classmodel.util.attribute.AttributeInfo;
-import estamosremoto.utils.classmodel.util.constantpool.ConstantPoolItem;
-import estamosremoto.utils.classmodel.util.field.Field;
-import estamosremoto.utils.classmodel.util.method.Method;
-import estamosremoto.utils.classmodel.util.properties.HasBytes;
-import estamosremoto.utils.classmodel.util.properties.HasNameIndex;
-import estamosremoto.utils.codeattribute.CodeAttribute;
-import estamosremoto.utils.logger.ColorLogger;
+import bbambozzi.utils.bytechannel.ByteChannelParser;
+import bbambozzi.utils.classmodel.ConstantPoolItemsParser;
+import bbambozzi.utils.classmodel.VersionMetadata;
+import bbambozzi.utils.classmodel.util.accessflag.ClassAccessFlag;
+import bbambozzi.utils.classmodel.util.attribute.AttributeInfo;
+import bbambozzi.utils.classmodel.util.constantpool.ConstantPoolItem;
+import bbambozzi.utils.classmodel.util.field.Field;
+import bbambozzi.utils.classmodel.util.method.Method;
+import bbambozzi.utils.classmodel.util.properties.HasBytes;
+import bbambozzi.utils.classmodel.util.properties.HasNameIndex;
+import bbambozzi.utils.codeattribute.CodeAttribute;
+import bbambozzi.utils.logger.ColorLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -272,5 +272,4 @@ public class ClassModelParser {
     public byte[] findMainMethodBytecode() {
         return findMainMethodCodeAttribute().code();
     }
-
 }
