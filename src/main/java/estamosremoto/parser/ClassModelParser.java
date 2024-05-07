@@ -12,9 +12,9 @@ import estamosremoto.utils.classmodel.util.properties.HasBytes;
 import estamosremoto.utils.classmodel.util.properties.HasNameIndex;
 import estamosremoto.utils.logger.ColorLogger;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SeekableByteChannel;
+import java.nio.channels.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class ClassModelParser {
         this.thisClass = constantPoolItems.get(getThisClassIndex());
         this.superclass = constantPoolItems.get(getThisSuperclassIndex());
         this.interfaceCount = parseInterfaceCount();
-        this.interfaces = new byte[] {};
+        this.interfaces = new byte[]{};
         this.fieldsCount = parseFieldsCount();
         this.fields = new ArrayList<>();
         if (interfaceCount > 0 || fieldsCount > 0) {
@@ -209,7 +209,7 @@ public class ClassModelParser {
     private void printAllMethods() {
         for (Method method : methods) {
             var name_index = method.name_index();
-            ConstantPoolItem item = constantPoolItems.get(name_index- 1);
+            ConstantPoolItem item = constantPoolItems.get(name_index - 1);
             if (item instanceof HasNameIndex found) {
                 logger.green(constantPoolItems.get(found.name_index()).toString());
             } else {
@@ -233,7 +233,7 @@ public class ClassModelParser {
     }
 
     public List<AttributeInfo> findAttributeInfoByName(List<AttributeInfo> atttributes, byte[] name) {
-            List<AttributeInfo> answer = new ArrayList<>();
+        List<AttributeInfo> answer = new ArrayList<>();
         for (AttributeInfo attribute : atttributes) {
             var item = constantPoolItems.get(attribute.attribute_name_index() - 1);
             if (item instanceof HasBytes found) {
@@ -250,7 +250,7 @@ public class ClassModelParser {
     }
 
     public AttributeInfo findMainMethodAttributeInfo() {
-        Method method =  findMethodsByName("main".getBytes()).getFirst();
+        Method method = findMethodsByName("main".getBytes()).getFirst();
         return findCodeByName(method.attribute_info());
     }
 
@@ -258,8 +258,9 @@ public class ClassModelParser {
         return findMainMethodAttributeInfo().info();
     }
 
-    public ByteBuffer findMainMethodBytecode() {
-        var bytes = findMainMethodBytecodeBytes();
-        return ByteBuffer.wrap(bytes);
+    public ReadableByteChannel findMainMethodBytecode() {
+        byte[] bytes = findMainMethodBytecodeBytes();
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        return Channels.newChannel(byteArrayInputStream);
     }
 }

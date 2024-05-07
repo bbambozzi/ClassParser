@@ -4,7 +4,9 @@ import estamosremoto.parser.ClassModelParser;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.nio.channels.ByteChannel;
+import java.nio.channels.Channel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 
 public class Main {
@@ -17,7 +19,7 @@ public class Main {
         System.out.println("Got path: " + args[0]);
         Path path = Path.of(args[0]);
         ClassModelParser classModelParser = new ClassModelParser(path);
-        ByteBuffer buffer = classModelParser.findMainMethodBytecode();
+        ReadableByteChannel buffer = classModelParser.findMainMethodBytecode();
         System.exit(0);
     }
 }

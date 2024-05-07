@@ -5,12 +5,13 @@ import estamosremoto.utils.logger.ColorLogger;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
+import java.nio.channels.ReadableByteChannel;
 
 public class ByteChannelParser {
 
     public static final ColorLogger logger = new ColorLogger();
 
-    public static int parseU1(ByteChannel byteChannel) {
+    public static int parseU1(ReadableByteChannel byteChannel) {
         ByteBuffer buffer = ByteBuffer.allocate(1);
         try {
             byteChannel.read(buffer);
@@ -23,7 +24,7 @@ public class ByteChannelParser {
         return buffer.get(0);
     }
 
-    public static int parseU2(ByteChannel byteChannel) {
+    public static int parseU2(ReadableByteChannel byteChannel) {
         ByteBuffer buffer = ByteBuffer.allocate(2);
         try {
             byteChannel.read(buffer);
@@ -37,7 +38,7 @@ public class ByteChannelParser {
     }
 
 
-    public static byte[] parseU4(ByteChannel byteChannel) {
+    public static byte[] parseU4(ReadableByteChannel byteChannel) {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         try {
             byteChannel.read(buffer);
@@ -50,7 +51,7 @@ public class ByteChannelParser {
         }
     }
 
-    public static long parseU4L(ByteChannel byteChannel) {
+    public static long parseU4L(ReadableByteChannel byteChannel) {
         ByteBuffer buffer = ByteBuffer.allocate(4);
         try {
             int bytesRead = byteChannel.read(buffer);
@@ -59,7 +60,7 @@ public class ByteChannelParser {
             }
             buffer.flip();
             int unsignedInt = buffer.getInt();
-            long ans =  unsignedInt & 0xFFFFFFFFL;
+            long ans = unsignedInt & 0xFFFFFFFFL;
             buffer.clear();
             return ans;
         } catch (IOException e) {
@@ -70,7 +71,7 @@ public class ByteChannelParser {
     }
 
 
-    public static byte[] parseBytes(ByteChannel byteChannel, int amount) {
+    public static byte[] parseBytes(ReadableByteChannel byteChannel, int amount) {
         ByteBuffer buffer = ByteBuffer.allocate(amount);
         try {
             byteChannel.read(buffer);
