@@ -15,5 +15,7 @@ public class Main {
         }
         Path path = Path.of(args[0]);
         ClassModelParser classModelParser = new ClassModelParser(path);
+        byte[] mainMethodBytes = classModelParser.findMainMethodBytecode();
+        System.out.println(mainMethodBytes);
     }
 }

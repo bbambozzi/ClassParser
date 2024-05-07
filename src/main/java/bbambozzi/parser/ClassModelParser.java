@@ -252,27 +252,33 @@ public class ClassModelParser {
         return findAttributeInfoByName(atttributes, "Code".getBytes()).getFirst();
     }
 
-    public AttributeInfo findMainMethodAttributeInfo() {
-        Method method = findMethodsByName("main".getBytes()).getFirst();
+    public AttributeInfo findMethodAttributeInfo(String methodName) {
+        Method method = findMethodsByName(methodName.getBytes()).getFirst();
         return findCodeByName(method.attribute_info());
     }
 
-    public byte[] findMainMethodAttributeInfoBytes() {
-        return findMainMethodAttributeInfo().info();
+    public byte[] findMethodAttributeInfoBytes(String methodName) {
+        return findMethodAttributeInfo(methodName).info();
     }
 
-    public ReadableByteChannel findMainMethodAttributeInfoByteChannel() {
-        byte[] bytes = findMainMethodAttributeInfoBytes();
+    public ReadableByteChannel findMethodAttributeInfoByteChannel(String methodName) {
+        byte[] bytes = findMethodAttributeInfoBytes(methodName);
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
         return Channels.newChannel(byteArrayInputStream);
     }
 
-    public CodeAttribute findMainMethodCodeAttribute() {
-        return new CodeAttribute(findMainMethodAttributeInfoByteChannel());
+    public CodeAttribute findMethodCodeAttribute(String methodName) {
+        return new CodeAttribute(findMethodAttributeInfoByteChannel(methodName));
     }
 
     public byte[] findMainMethodBytecode() {
-        return findMainMethodCodeAttribute().code();
+        return findMethodCodeAttribute("main").code();
+    }
+
+
+    public byte[] findMethodBytecode(String methodName) {
+        return findMethodCodeAttribute(methodName).code();
+
     }
 
     public int getMethodsCount() {
@@ -298,4 +304,5 @@ public class ClassModelParser {
     public VersionMetadata getVersionMetadata() {
         return this.versionMetadata;
     }
+
 }
