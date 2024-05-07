@@ -43,7 +43,7 @@ public class ClassModelParser {
 
     public ClassModelParser(Path pathToBytecode) {
         this.byteChannel = getByteChannel(pathToBytecode);
-        this.versionMetadata = getVersionMetadata();
+        this.versionMetadata = parseVersionMetadata();
         this.constantPoolItems = parseConstantPoolItems();
         this.accessFlags = ClassAccessFlag.getMatching(getAccessFlagsMask());
         this.thisClass = constantPoolItems.get(getThisClassIndex());
@@ -147,7 +147,7 @@ public class ClassModelParser {
     }
 
 
-    private VersionMetadata getVersionMetadata() {
+    private VersionMetadata parseVersionMetadata() {
         try {
             this.byteChannel.position(0);
             String magicString = toHex(ByteChannelParser.parseU4(this.byteChannel));
@@ -293,5 +293,9 @@ public class ClassModelParser {
 
     public int getConstantPoolCount() {
         return this.constantPoolItems.size();
+    }
+
+    public VersionMetadata s() {
+        return this.versionMetadata;
     }
 }

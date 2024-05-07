@@ -55,4 +55,8 @@ public class ClassModelParserTest {
         assertEquals(12, parser.getConstantPoolCount());
     }
 
+    void versionInformationExists() {
+        assertNotNull(parser.get);
+    }
+
 }
