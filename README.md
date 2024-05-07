@@ -17,6 +17,8 @@ If you only need the ClassModel, and not the bytecode, the  [ClassModel API](htt
 - **Obtain the bytecode:** Unlike some others classfile parsers, you can obtain the byte[]s directly from the API.
 - **Unopinionated:** Want the bytecode? Here's the byte[]s.
 
+## Examples
+
 
 ### Give-me-the-bytes Example
 
