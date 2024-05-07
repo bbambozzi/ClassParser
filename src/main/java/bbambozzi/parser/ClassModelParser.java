@@ -295,7 +295,7 @@ public class ClassModelParser {
         return this.constantPoolItems.size();
     }
 
-    public VersionMetadata s() {
+    public VersionMetadata getVersionMetadata() {
         return this.versionMetadata;
     }
 }

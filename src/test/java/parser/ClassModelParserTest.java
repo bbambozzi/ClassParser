@@ -56,7 +56,7 @@ public class ClassModelParserTest {
     }
 
     void versionInformationExists() {
-        assertNotNull(parser.get);
+        assertNotNull(parser.getVersionMetadata());
     }
 
 }
