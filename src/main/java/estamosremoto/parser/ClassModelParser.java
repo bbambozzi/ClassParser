@@ -10,6 +10,7 @@ import estamosremoto.utils.classmodel.util.field.Field;
 import estamosremoto.utils.classmodel.util.method.Method;
 import estamosremoto.utils.classmodel.util.properties.HasBytes;
 import estamosremoto.utils.classmodel.util.properties.HasNameIndex;
+import estamosremoto.utils.codeattribute.CodeAttribute;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.ByteArrayInputStream;
@@ -254,13 +255,22 @@ public class ClassModelParser {
         return findCodeByName(method.attribute_info());
     }
 
-    public byte[] findMainMethodBytecodeBytes() {
+    public byte[] findMainMethodAttributeInfoBytes() {
         return findMainMethodAttributeInfo().info();
     }
 
-    public ReadableByteChannel findMainMethodBytecode() {
-        byte[] bytes = findMainMethodBytecodeBytes();
+    public ReadableByteChannel findMainMethodAttributeInfoByteChannel() {
+        byte[] bytes = findMainMethodAttributeInfoBytes();
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
         return Channels.newChannel(byteArrayInputStream);
     }
+
+    public CodeAttribute findMainMethodCodeAttribute() {
+        return new CodeAttribute(findMainMethodAttributeInfoByteChannel());
+    }
+
+    public byte[] findMainMethodBytecode() {
+        return findMainMethodCodeAttribute().code();
+    }
+
 }

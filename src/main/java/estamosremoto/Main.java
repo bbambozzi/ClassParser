@@ -5,9 +5,8 @@ import estamosremoto.utils.codeattribute.CodeAttribute;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.Channel;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 public class Main {
@@ -20,9 +19,7 @@ public class Main {
         System.out.println("Got path: " + args[0]);
         Path path = Path.of(args[0]);
         ClassModelParser classModelParser = new ClassModelParser(path);
-        ReadableByteChannel mainMethodBytecode = classModelParser.findMainMethodBytecode();
-        CodeAttribute codeAttribute = new CodeAttribute(mainMethodBytecode);
-        System.out.println(codeAttribute);
+        byte[] bytecode = classModelParser.findMainMethodBytecode();
         System.exit(0);
     }
 }
