@@ -1,13 +1,13 @@
 package parser;
 
 import bbambozzi.parser.ClassModelParser;
+import bbambozzi.utils.classmodel.VersionMetadata;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClassModelParserTest {
 
@@ -55,8 +55,15 @@ public class ClassModelParserTest {
         assertEquals(12, parser.getConstantPoolCount());
     }
 
+    @Test
     void versionInformationExists() {
         assertNotNull(parser.getVersionMetadata());
+    }
+
+    @Test
+    void classFileIsSupported() {
+        VersionMetadata versionMetadata = parser.getVersionMetadata();
+        assertTrue(versionMetadata.majorVersion() >= 21);
     }
 
 }
