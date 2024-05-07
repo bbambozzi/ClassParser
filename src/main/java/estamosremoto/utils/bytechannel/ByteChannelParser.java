@@ -4,7 +4,6 @@ import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
 import java.nio.channels.ReadableByteChannel;
 
 public class ByteChannelParser {
@@ -29,7 +28,7 @@ public class ByteChannelParser {
         try {
             byteChannel.read(buffer);
             buffer.flip();
-            return buffer.getShort(0) & 0xffff;
+            return buffer.getShort() & 0xffff;
         } catch (IOException e) {
             logger.red("Failed to parse U2 at position " + buffer.position());
             System.exit(1);
@@ -59,14 +58,25 @@ public class ByteChannelParser {
                 logger.red("could not read 4 bytes");
             }
             buffer.flip();
-            int unsignedInt = buffer.getInt();
-            long ans = unsignedInt & 0xFFFFFFFFL;
+            long value = ((long) buffer.getInt()) & 0xFFFFFFFFL;
             buffer.clear();
-            return ans;
+            return value;
+        } catch (IOException e) {
+            logger.red("Failed to parse U4 at position " + buffer.position());
+            System.exit(1);
+            return -1;
+        }
+    }
+
+    public static byte[] parseBytes(ReadableByteChannel byteChannel, long amount) {
+        ByteBuffer buffer = ByteBuffer.allocate((int) amount);
+        try {
+            byteChannel.read(buffer);
+            return buffer.array();
         } catch (IOException e) {
             logger.red("Failed to parse U1 at position " + buffer.position());
             System.exit(1);
-            return -1;
+            return buffer.array();
         }
     }
 

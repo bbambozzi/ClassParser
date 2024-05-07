@@ -1,6 +1,7 @@
 package estamosremoto;
 
 import estamosremoto.parser.ClassModelParser;
+import estamosremoto.utils.codeattribute.CodeAttribute;
 import estamosremoto.utils.logger.ColorLogger;
 
 import java.io.IOException;
@@ -19,7 +20,9 @@ public class Main {
         System.out.println("Got path: " + args[0]);
         Path path = Path.of(args[0]);
         ClassModelParser classModelParser = new ClassModelParser(path);
-        ReadableByteChannel buffer = classModelParser.findMainMethodBytecode();
+        ReadableByteChannel mainMethodBytecode = classModelParser.findMainMethodBytecode();
+        CodeAttribute codeAttribute = new CodeAttribute(mainMethodBytecode);
+        System.out.println(codeAttribute);
         System.exit(0);
     }
 }
