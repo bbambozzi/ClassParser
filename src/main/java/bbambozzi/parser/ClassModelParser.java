@@ -15,7 +15,9 @@ import bbambozzi.utils.logger.ColorLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.channels.*;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -271,5 +273,25 @@ public class ClassModelParser {
 
     public byte[] findMainMethodBytecode() {
         return findMainMethodCodeAttribute().code();
+    }
+
+    public int getMethodsCount() {
+        return methodsCount;
+    }
+
+    public int getInterfaceCount() {
+        return interfaceCount;
+    }
+
+    public int getAttributesCount() {
+        return attributesCount;
+    }
+
+    public int getFieldsCount() {
+        return fieldsCount;
+    }
+
+    public int getConstantPoolCount() {
+        return this.constantPoolItems.size();
     }
 }
