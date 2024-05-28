@@ -25,7 +25,7 @@ If you only need the ClassModel, and not the bytecode, the  [ClassModel API](htt
 ```java
 Path path = Path.of("path/to/file"); // Get the path 📁
 ClassModelParser parser = new ClassModelParser(path); // Create the parser 🔍
-byte[] mainMethodBytes = parser.findMainMethodBytecode; // Get the bytecode 👾!
+byte[] mainMethodBytes = parser.findMainMethodBytecode(); // Get the bytecode 👾!
 
 ```
 
